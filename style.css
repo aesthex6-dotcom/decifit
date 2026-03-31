@@ -153,7 +153,7 @@ button:hover {
   color: #64748b;
 }
 
-/* VIDEO BACKGROUND (FIXED) */
+/* VIDEO */
 #bgVideo {
   position: fixed;
   top: 0;
@@ -162,23 +162,20 @@ button:hover {
   height: 100%;
   object-fit: cover;
   z-index: -1;
-  opacity: 0.08; /* 🔥 reduced */
+  opacity: 0.08;
 }
-/* 🔥 INTERACTIVE GLOW SYSTEM */
 
-/* PANELS */
+/* 🔥 INTERACTIVE GLOW */
 .left:hover,
 .right:hover {
   box-shadow: 0 0 25px rgba(34, 197, 94, 0.25);
 }
 
-/* INPUTS */
 input:focus,
 select:focus {
   box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
 }
 
-/* BUTTON */
 button:hover {
   box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
 }
@@ -187,28 +184,24 @@ button:active {
   box-shadow: 0 0 20px rgba(34, 197, 94, 0.9);
 }
 
-/* CARDS */
 .card:hover {
   box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
   transform: translateY(-2px);
 }
 
-/* TRACKER BOX */
 .food-tracker:hover {
   box-shadow: 0 0 20px rgba(34, 197, 94, 0.35);
 }
 
-/* PROGRESS BAR GLOW WHEN ACTIVE */
 .progress-bar:hover #calorieBar {
   box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
 }
 
-/* FOOD HISTORY ITEMS */
 .history li:hover {
   box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
 }
 
-/*reset button*/
+/* RESET BUTTON */
 .reset-btn {
   margin-top: 15px;
   background: #ef4444;
@@ -219,17 +212,13 @@ button:active {
   box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
 }
 
-/* =========================
-   🔥 SUMMARY UI STYLING
-========================= */
-
+/* SUMMARY */
 .summary-box {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-/* 🧠 MESSAGE (top paragraph) */
 .summary-message {
   font-size: 14px;
   color: #94a3b8;
@@ -239,14 +228,12 @@ button:active {
   border-radius: 8px;
 }
 
-/* 📊 GRID */
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
-/* 📦 GRID ITEMS */
 .summary-grid div {
   background: rgba(15, 23, 42, 0.8);
   padding: 12px;
@@ -254,13 +241,11 @@ button:active {
   transition: 0.2s;
 }
 
-/* 🏷 LABEL */
 .summary-grid span {
   font-size: 12px;
   color: #64748b;
 }
 
-/* 💪 VALUE */
 .summary-grid strong {
   display: block;
   font-size: 16px;
@@ -268,54 +253,65 @@ button:active {
   margin-top: 3px;
 }
 
-/* ✨ HOVER GLOW (fits your theme) */
 .summary-grid div:hover {
   box-shadow: 0 0 12px rgba(34, 197, 94, 0.4);
   transform: translateY(-2px);
 }
 
-/* 📱 MOBILE RESPONSIVE DESIGN */
+/* 📱 MOBILE FIX (FINAL) */
 @media (max-width: 768px) {
-  /* STACK LAYOUT */
   .main {
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
   }
 
-  /* FULL WIDTH PANELS */
   .left,
   .right {
     width: 100%;
     max-width: 100%;
+    padding: 15px;
   }
 
-  /* BODY PADDING */
+  .left {
+    margin-bottom: 20px;
+  }
+
   body {
-    padding: 20px 10px;
+    padding: 15px 10px;
   }
 
-  /* TEXT SIZE */
   h1 {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   h2 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
-  /* INPUTS */
   input,
   select {
     padding: 10px;
+    margin: 6px 0;
   }
 
-  /* BUTTON */
   button {
     padding: 10px;
+    font-size: 14px;
   }
 
-  /* SUMMARY GRID */
+  .food-tracker {
+    padding: 12px;
+  }
+
   .summary-grid {
     grid-template-columns: 1fr;
   }
+
+  .summary-message {
+    font-size: 13px;
+  }
+}
+/*smooth scroll*/
+html {
+  scroll-behavior: smooth;
 }
