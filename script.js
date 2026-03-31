@@ -58,6 +58,12 @@ function saveData() {
 
   localStorage.setItem("decifitData", JSON.stringify(data));
 }
+//scrolling to result
+function scrollToResults() {
+  document.getElementById("result").scrollIntoView({
+    behavior: "smooth",
+  });
+}
 
 function calculate() {
   let age = document.getElementById("age").value;
@@ -212,6 +218,7 @@ function calculate() {
 
     updateProgress();
     saveData();
+    scrollToResults();
   }, 1000);
 }
 
