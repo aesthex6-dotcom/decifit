@@ -1,0 +1,301 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 0.95));
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 40px 0;
+  margin: 0;
+}
+
+/* MAIN LAYOUT */
+.main {
+  display: flex;
+  width: 95%;
+  max-width: 1400px;
+  gap: 80px;
+  justify-content: space-between;
+}
+
+/* LEFT PANEL */
+.left {
+  flex: 1;
+  max-width: 450px;
+
+  background: rgba(2, 6, 23, 0.85); /* 🔥 darker */
+  backdrop-filter: blur(15px); /* 🔥 glass effect */
+
+  padding: 30px;
+  border-radius: 20px;
+
+  border: 1px solid rgba(34, 197, 94, 0.2);
+
+  box-shadow:
+    0 0 20px rgba(34, 197, 94, 0.15),
+    0 0 40px rgba(34, 197, 94, 0.1);
+}
+.left:hover {
+  box-shadow:
+    0 0 30px #22c55e,
+    0 0 60px rgba(34, 197, 94, 0.2);
+}
+
+/* RIGHT PANEL */
+.right {
+  flex: 1;
+  max-width: 450px;
+  margin-left: auto;
+
+  background: rgba(2, 6, 23, 0.95); /* 🔥 stronger */
+  backdrop-filter: blur(20px); /* 🔥 glass effect */
+
+  padding: 30px;
+  border-radius: 20px;
+
+  border: 1px solid rgba(34, 197, 94, 0.4);
+
+  box-shadow:
+    0 0 25px rgba(34, 197, 94, 0.25),
+    0 0 50px rgba(34, 197, 94, 0.15);
+
+  position: relative;
+}
+.right {
+  flex: 1;
+  max-width: 450px;
+  margin-left: auto;
+
+  background: rgba(2, 6, 23, 0.95); /* 🔥 stronger */
+  backdrop-filter: blur(20px); /* 🔥 glass effect */
+
+  padding: 30px;
+  border-radius: 20px;
+
+  border: 1px solid rgba(34, 197, 94, 0.4);
+
+  box-shadow:
+    0 0 25px rgba(34, 197, 94, 0.25),
+    0 0 50px rgba(34, 197, 94, 0.15);
+
+  position: relative;
+}
+.panel-title {
+  margin-bottom: 20px;
+  padding-left: 5px;
+
+  color: #e2e8f0;
+  font-weight: 600;
+
+  text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+}
+.right h2 {
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+
+  border-bottom: 1px solid rgba(34, 197, 94, 0.6);
+  border-bottom: 1px solid #22c55e;
+
+  box-shadow: 0 2px 10px rgba(34, 197, 94, 0.5);
+
+  text-shadow:
+    0 0 10px #22c55e,
+    0 0 20px rgba(34, 197, 94, 0.5);
+}
+
+/* INPUTS */
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: none;
+  background: #020617;
+  color: rgb(132, 255, 169);
+  outline: none;
+  box-shadow: 0 0 5px #9dff80;
+}
+
+/* INPUT FOCUS */
+input:focus,
+select:focus {
+  box-shadow:
+    0 0 10px #22c55e,
+    0 0 20px #22c55e;
+  transform: scale(1.02);
+}
+
+/* BUTTON */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 10px;
+  border: none;
+  background: #d5fcff;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow:
+    0 0 10px #88c0f4,
+    0 0 20px #f7fffa;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* RESULT BOX */
+#result {
+  margin-top: 10px;
+  background: #020617;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #22c55e;
+  transition: all 0.4s ease-in-out;
+}
+
+/* EMPTY STATE */
+.empty-state {
+  padding: 20px;
+  text-align: center;
+  color: #94a3b8;
+}
+
+/* LOADING BAR */
+.loading-bar {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.loading-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #dff7e8, #767676cd);
+  animation: loadBar 1s ease-in-out forwards;
+}
+
+@keyframes loadBar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* FOOD TRACKER */
+.food-tracker {
+  margin-top: 25px;
+  padding: 20px;
+  border-radius: 16px;
+
+  background: rgba(2, 6, 23, 0.9); /* 🔥 darker */
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(34, 197, 94, 0.3);
+
+  box-shadow:
+    0 0 15px rgba(34, 197, 94, 0.2),
+    0 0 30px rgba(34, 197, 94, 0.1);
+
+  transition: 0.3s;
+}
+
+.food-tracker input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: none;
+  background: #020617;
+  color: white;
+}
+
+.food-tracker button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  background: #22c55e;
+  border: none;
+  cursor: pointer;
+}
+.food-tracker:hover {
+  box-shadow:
+    0 0 25px #22c55e,
+    0 0 50px rgba(34, 197, 94, 0.2);
+}
+/* PLACEHOLDER */
+::placeholder {
+  color: #94a3b8;
+}
+/* 📊 DASHBOARD CARDS */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.card {
+  background: rgba(15, 23, 42, 0.8);
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px #22c55e;
+}
+
+.card h3 {
+  margin-bottom: 8px;
+  color: #22c55e;
+}
+
+/* 🔥 REMAINING CALORIES (IMPORTANT) */
+#remainingCalories {
+  font-weight: bold;
+  font-size: 18px;
+  color: #4ade80;
+  margin-top: 10px;
+}
+
+/* 💪 MACROS DISPLAY */
+#remainingMacros {
+  font-size: 14px;
+  color: #cbd5f5;
+}
+
+/* 🚨 WARNING COLORS (future ready) */
+.low {
+  color: #facc15;
+}
+
+.exceeded {
+  color: #ef4444;
+}
+
+/*bg video*/
+#bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  opacity: 0.2;
+}
