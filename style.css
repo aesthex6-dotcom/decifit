@@ -274,8 +274,47 @@ button:active {
   transform: translateY(-2px);
 }
 
-/* 📱 RESPONSIVE (mobile ready) */
-@media (max-width: 600px) {
+/* 📱 MOBILE RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  /* STACK LAYOUT */
+  .main {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* FULL WIDTH PANELS */
+  .left,
+  .right {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* BODY PADDING */
+  body {
+    padding: 20px 10px;
+  }
+
+  /* TEXT SIZE */
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  /* INPUTS */
+  input,
+  select {
+    padding: 10px;
+  }
+
+  /* BUTTON */
+  button {
+    padding: 10px;
+  }
+
+  /* SUMMARY GRID */
   .summary-grid {
     grid-template-columns: 1fr;
   }
