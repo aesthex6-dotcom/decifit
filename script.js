@@ -1,3 +1,9 @@
+// 🔥 TOTAL TARGETS
+let totalCalories = 0;
+let totalProtein = 0;
+let totalCarbs = 0;
+let totalFats = 0;
+
 // 🔥 GLOBAL STATE (REVERSE TRACKING)
 let remainingCaloriesGlobal = 0;
 let remainingProtein = 0;
@@ -16,6 +22,43 @@ const foodDatabase = {
   roti: { type: "unit", calories: 120, protein: 3, carbs: 20, fats: 3 },
 };
 
+// 📜 FOOD HISTORY
+function addToHistory(food, quantity, calories) {
+  let list = document.getElementById("foodList");
+
+  let li = document.createElement("li");
+  li.innerText = `${food} (${quantity}) - ${Math.round(calories)} kcal`;
+
+  list.appendChild(li);
+}
+
+// 📊 PROGRESS BAR
+function updateProgress() {
+  if (totalCalories === 0) return;
+
+  let percent =
+    ((totalCalories - remainingCaloriesGlobal) / totalCalories) * 100;
+
+  document.getElementById("calorieBar").style.width = percent + "%";
+}
+
+// 💾 SAVE DATA
+function saveData() {
+  const data = {
+    remainingCaloriesGlobal,
+    remainingProtein,
+    remainingCarbs,
+    remainingFats,
+    totalCalories,
+    totalProtein,
+    totalCarbs,
+    totalFats,
+    history: document.getElementById("foodList").innerHTML,
+  };
+
+  localStorage.setItem("decifitData", JSON.stringify(data));
+}
+
 function calculate() {
   let age = document.getElementById("age").value;
   let height = document.getElementById("height").value;
@@ -24,7 +67,7 @@ function calculate() {
   let activity = document.getElementById("activity").value;
   let goal = document.getElementById("goal").value;
 
-  // 🛑 VALIDATION
+  // VALIDATION
   if (!age || !height || !weight) {
     document.getElementById("result").innerHTML = "Please fill all fields";
     return;
@@ -36,11 +79,62 @@ function calculate() {
     return;
   }
 
-  // 🔢 Convert
+  // Convert
   age = Number(age);
   height = Number(height);
   weight = Number(weight);
   activity = Number(activity);
+
+  // 🧠 CLEAN LABELS
+  let goalText =
+    goal === "lose"
+      ? "Fat Loss"
+      : goal === "gain"
+        ? "Muscle Gain"
+        : "Maintenance";
+
+  let activityText =
+    activity == 1.2
+      ? "Sedentary"
+      : activity == 1.375
+        ? "Lightly Active"
+        : activity == 1.55
+          ? "Moderately Active"
+          : "Very Active";
+
+  // 🧠 PERSONALIZED MESSAGE
+  let message = "";
+
+  if (goal === "lose") {
+    message =
+      "So you want to lose fat — great choice. We'll guide you into a calorie deficit while keeping your protein high to preserve muscle.";
+  } else if (goal === "gain") {
+    message =
+      "Looking to build muscle — love that. We'll help you stay in a calorie surplus with the right macros for growth.";
+  } else {
+    message =
+      "Maintaining your physique — solid. We'll help you stay consistent and balanced with your nutrition.";
+  }
+
+  // 🧠 FINAL SUMMARY UI
+  let summary = `
+    <div class="summary-box">
+      <p class="summary-message">${message}</p>
+
+      <div class="summary-grid">
+        <div><span>Age</span><strong>${age}</strong></div>
+        <div><span>Height</span><strong>${height} cm</strong></div>
+        <div><span>Weight</span><strong>${weight} kg</strong></div>
+        <div><span>Goal</span><strong>${goalText}</strong></div>
+        <div><span>Activity</span><strong>${activityText}</strong></div>
+      </div>
+    </div>
+  `;
+
+  // 🔥 UI SWITCH
+  document.querySelector(".form").style.display = "none";
+  document.getElementById("userSummary").style.display = "block";
+  document.getElementById("summaryText").innerHTML = summary;
 
   let bmr;
 
@@ -61,17 +155,22 @@ function calculate() {
     target = maintenance;
   }
 
-  // 🔥 SET TARGETS (REVERSE SYSTEM)
+  // TARGETS
   let protein = weight * 2;
   let fats = weight * 0.8;
   let carbs = (target - (protein * 4 + fats * 9)) / 4;
 
-  remainingCaloriesGlobal = Math.round(target);
-  remainingProtein = Math.round(protein);
-  remainingCarbs = Math.round(carbs);
-  remainingFats = Math.round(fats);
+  totalCalories = Math.round(target);
+  totalProtein = Math.round(protein);
+  totalCarbs = Math.round(carbs);
+  totalFats = Math.round(fats);
 
-  // ⚡ LOADING
+  remainingCaloriesGlobal = totalCalories;
+  remainingProtein = totalProtein;
+  remainingCarbs = totalCarbs;
+  remainingFats = totalFats;
+
+  // LOADING
   document.getElementById("result").innerHTML = `
     <p>Generating your plan...</p>
     <div class="loading-bar">
@@ -103,15 +202,16 @@ function calculate() {
       </div>
     `;
 
-    // 🔥 SHOW TRACKER
     document.getElementById("tracker").style.display = "block";
 
-    // 🔥 UPDATE UI
     document.getElementById("remainingCalories").innerText =
       `Remaining: ${remainingCaloriesGlobal} kcal`;
 
     document.getElementById("remainingMacros").innerText =
       `Protein: ${remainingProtein}g | Carbs: ${remainingCarbs}g | Fats: ${remainingFats}g`;
+
+    updateProgress();
+    saveData();
   }, 1000);
 }
 
@@ -134,24 +234,64 @@ function addFood() {
   let factor = item.type === "weight" ? quantity / 100 : quantity;
 
   let calories = item.calories * factor;
-  let protein = item.protein * factor;
-  let carbs = item.carbs * factor;
-  let fats = item.fats * factor;
 
-  // 🔥 REVERSE TRACKING
   remainingCaloriesGlobal -= calories;
-  remainingProtein -= protein;
-  remainingCarbs -= carbs;
-  remainingFats -= fats;
+  remainingProtein -= item.protein * factor;
+  remainingCarbs -= item.carbs * factor;
+  remainingFats -= item.fats * factor;
 
-  // 🔥 UPDATE UI
+  addToHistory(food, quantity, calories);
+
   document.getElementById("remainingCalories").innerText =
     `Remaining: ${Math.round(remainingCaloriesGlobal)} kcal`;
 
   document.getElementById("remainingMacros").innerText =
-    `Protein: ${Math.round(remainingProtein)}g | Carbs: ${Math.round(remainingCarbs)}g | Fats: ${Math.round(remainingFats)}g`;
+    `Protein: ${Math.round(remainingProtein)}g | Carbs: ${Math.round(
+      remainingCarbs,
+    )}g | Fats: ${Math.round(remainingFats)}g`;
 
-  // clear inputs
+  updateProgress();
+  saveData();
+
   document.getElementById("foodName").value = "";
   document.getElementById("foodQuantity").value = "";
+}
+
+// LOAD
+window.onload = function () {
+  let saved = localStorage.getItem("decifitData");
+  if (!saved) return;
+
+  let data = JSON.parse(saved);
+
+  remainingCaloriesGlobal = data.remainingCaloriesGlobal;
+  remainingProtein = data.remainingProtein;
+  remainingCarbs = data.remainingCarbs;
+  remainingFats = data.remainingFats;
+
+  totalCalories = data.totalCalories;
+
+  document.getElementById("tracker").style.display = "block";
+  document.getElementById("foodList").innerHTML = data.history;
+
+  updateProgress();
+};
+
+// RESET
+function resetDay() {
+  localStorage.removeItem("decifitData");
+
+  document.querySelector(".form").style.display = "block";
+  document.getElementById("userSummary").style.display = "none";
+
+  document.getElementById("tracker").style.display = "none";
+
+  document.getElementById("result").innerHTML = `
+    <div class="empty-state">
+      <p>Fill the form to generate your fitness plan</p>
+    </div>
+  `;
+
+  document.getElementById("foodList").innerHTML = "";
+  document.getElementById("calorieBar").style.width = "0%";
 }
