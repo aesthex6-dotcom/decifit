@@ -1,16 +1,16 @@
-// 🔥 TOTAL TARGETS
+//  TOTAL TARGETS
 let totalCalories = 0;
 let totalProtein = 0;
 let totalCarbs = 0;
 let totalFats = 0;
 
-// 🔥 GLOBAL STATE (REVERSE TRACKING)
+//  GLOBAL STATE (REVERSE TRACKING)
 let remainingCaloriesGlobal = 0;
 let remainingProtein = 0;
 let remainingCarbs = 0;
 let remainingFats = 0;
 
-// 🍗 FOOD DATABASE
+//  FOOD DATABASE
 const foodDatabase = {
   rice: { type: "weight", calories: 130, protein: 2.7, carbs: 28, fats: 0.3 },
   chicken: { type: "weight", calories: 165, protein: 31, carbs: 0, fats: 3.6 },
@@ -22,7 +22,7 @@ const foodDatabase = {
   roti: { type: "unit", calories: 120, protein: 3, carbs: 20, fats: 3 },
 };
 
-// 📜 FOOD HISTORY
+//  FOOD HISTORY
 function addToHistory(food, quantity, calories) {
   let list = document.getElementById("foodList");
 
@@ -32,7 +32,7 @@ function addToHistory(food, quantity, calories) {
   list.appendChild(li);
 }
 
-// 📊 PROGRESS BAR
+//  PROGRESS BAR
 function updateProgress() {
   if (totalCalories === 0) return;
 
@@ -42,7 +42,7 @@ function updateProgress() {
   document.getElementById("calorieBar").style.width = percent + "%";
 }
 
-// 💾 SAVE DATA
+//  SAVE DATA
 function saveData() {
   const data = {
     remainingCaloriesGlobal,
@@ -91,7 +91,7 @@ function calculate() {
   weight = Number(weight);
   activity = Number(activity);
 
-  // 🧠 CLEAN LABELS
+  //  CLEAN LABELS
   let goalText =
     goal === "lose"
       ? "Fat Loss"
@@ -108,7 +108,7 @@ function calculate() {
           ? "Moderately Active"
           : "Very Active";
 
-  // 🧠 PERSONALIZED MESSAGE
+  //  PERSONALIZED MESSAGE
   let message = "";
 
   if (goal === "lose") {
@@ -122,7 +122,7 @@ function calculate() {
       "Maintaining your physique — solid. We'll help you stay consistent and balanced with your nutrition.";
   }
 
-  // 🧠 FINAL SUMMARY UI
+  //  FINAL SUMMARY UI
   let summary = `
     <div class="summary-box">
       <p class="summary-message">${message}</p>
@@ -137,7 +137,7 @@ function calculate() {
     </div>
   `;
 
-  // 🔥 UI SWITCH
+  //  UI SWITCH
   document.querySelector(".form").style.display = "none";
   document.getElementById("userSummary").style.display = "block";
   document.getElementById("summaryText").innerHTML = summary;
@@ -186,7 +186,7 @@ function calculate() {
 
   setTimeout(() => {
     document.getElementById("result").innerHTML = `
-      <div class="dashboard">
+      <div class="dashboard fade-in">
 
         <div class="card">
           <h3>Maintenance</h3>
@@ -209,6 +209,7 @@ function calculate() {
     `;
 
     document.getElementById("tracker").style.display = "block";
+    document.getElementById("tracker").classList.add("fade-in");
 
     document.getElementById("remainingCalories").innerText =
       `Remaining: ${remainingCaloriesGlobal} kcal`;
@@ -222,7 +223,7 @@ function calculate() {
   }, 1000);
 }
 
-function addFood() {
+async function addFood() {
   let food = document.getElementById("foodName").value.toLowerCase();
   let quantity = Number(document.getElementById("foodQuantity").value);
 
@@ -231,37 +232,44 @@ function addFood() {
     return;
   }
 
-  let item = foodDatabase[food];
+  try {
+    let res = await fetch(
+      `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${food}&search_simple=1&action=process&json=1`,
+    );
 
-  if (!item) {
-    alert("Food not in database");
-    return;
+    let data = await res.json();
+
+    if (!data.products || data.products.length === 0) {
+      throw new Error("No data found");
+    }
+
+    let item = data.products[0].nutriments;
+
+    let calories = (item["energy-kcal_100g"] || 0) * (quantity / 100);
+    let protein = (item.proteins_100g || 0) * (quantity / 100);
+    let carbs = (item.carbohydrates_100g || 0) * (quantity / 100);
+    let fats = (item.fat_100g || 0) * (quantity / 100);
+
+    updateTracking(food, quantity, calories, protein, carbs, fats);
+  } catch (error) {
+    console.log("API failed, using local DB");
+
+    let item = foodDatabase[food];
+
+    if (!item) {
+      alert("Food not found");
+      return;
+    }
+
+    let factor = item.type === "weight" ? quantity / 100 : quantity;
+
+    let calories = item.calories * factor;
+    let protein = item.protein * factor;
+    let carbs = item.carbs * factor;
+    let fats = item.fats * factor;
+
+    updateTracking(food, quantity, calories, protein, carbs, fats);
   }
-
-  let factor = item.type === "weight" ? quantity / 100 : quantity;
-
-  let calories = item.calories * factor;
-
-  remainingCaloriesGlobal -= calories;
-  remainingProtein -= item.protein * factor;
-  remainingCarbs -= item.carbs * factor;
-  remainingFats -= item.fats * factor;
-
-  addToHistory(food, quantity, calories);
-
-  document.getElementById("remainingCalories").innerText =
-    `Remaining: ${Math.round(remainingCaloriesGlobal)} kcal`;
-
-  document.getElementById("remainingMacros").innerText =
-    `Protein: ${Math.round(remainingProtein)}g | Carbs: ${Math.round(
-      remainingCarbs,
-    )}g | Fats: ${Math.round(remainingFats)}g`;
-
-  updateProgress();
-  saveData();
-
-  document.getElementById("foodName").value = "";
-  document.getElementById("foodQuantity").value = "";
 }
 
 // LOAD
@@ -301,4 +309,29 @@ function resetDay() {
 
   document.getElementById("foodList").innerHTML = "";
   document.getElementById("calorieBar").style.width = "0%";
+}
+
+// helper function:-
+
+function updateTracking(food, quantity, calories, protein, carbs, fats) {
+  remainingCaloriesGlobal -= calories;
+  remainingProtein -= protein;
+  remainingCarbs -= carbs;
+  remainingFats -= fats;
+
+  addToHistory(food, quantity, calories);
+
+  document.getElementById("remainingCalories").innerText =
+    `Remaining: ${Math.round(remainingCaloriesGlobal)} kcal`;
+
+  document.getElementById("remainingMacros").innerText =
+    `Protein: ${Math.round(remainingProtein)}g | Carbs: ${Math.round(
+      remainingCarbs,
+    )}g | Fats: ${Math.round(remainingFats)}g`;
+
+  updateProgress();
+  saveData();
+
+  document.getElementById("foodName").value = "";
+  document.getElementById("foodQuantity").value = "";
 }
