@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Deficit</title>
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -10,8 +10,9 @@
     <video autoplay muted loop id="bgVideo">
       <source src="anime.mp4" type="video/mp4" />
     </video>
+
     <div class="main">
-      <!-- LEFT SIDE -->
+      <!-- left side -->
       <div class="left">
         <h1>Decifit</h1>
         <p>Know Your calories</p>
@@ -41,56 +42,76 @@
 
           <button onclick="calculate()">Calculate</button>
         </div>
+
         <div id="userSummary" style="display: none" class="card">
-  <h3>Your Profile</h3>
-  <p id="summaryText"></p>
-</div>
+          <h3>Your Profile</h3>
+          <p id="summaryText"></p>
+        </div>
       </div>
 
-      <!-- RIGHT SIDE -->
+      <!-- right side -->
       <div class="right">
-  <h2 class="panel-title">Your Plan</h2>
+        <h2 class="panel-title">Your Plan</h2>
 
-  <div id="result" class="card">
-    <div class="empty-state">
-      <p>Fill the form to generate your fitness plan</p>
-    </div>
-  </div>
+        <div id="result" class="card">
+          <div class="empty-state">
+            <p>Fill the form to generate your fitness plan</p>
+          </div>
+        </div>
 
-  <!-- TRACKER -->
-  <div class="food-tracker card" id="tracker" style="display: none">
-    <h3>Track Your Intake</h3>
+        <!--tracker -->
+        <div class="food-tracker card" id="tracker" style="display: none">
+          <h3>Track Your Intake</h3>
 
-    <div class="tracker-inputs">
-      <input type="text" id="foodName" placeholder="Food (e.g. rice)" />
-      <input
-        type="number"
-        id="foodQuantity"
-        placeholder="Quantity (grams / pieces)"
-      />
-      <button onclick="addFood()">Add Food</button>
-    </div>
+          <div class="tracker-inputs">
+            <input type="text" id="foodName" placeholder="Food (e.g. rice)" />
+            <input
+              type="number"
+              id="foodQuantity"
+              placeholder="Quantity (grams / pieces)"
+            />
+            <button onclick="addFood()">Add Food</button>
+          </div>
 
-    <!-- PROGRESS SECTION -->
-    <div class="progress-section">
-      <p id="remainingCalories">Remaining: 0 kcal</p>
-      <div class="progress-bar">
-        <div id="calorieBar"></div>
+          <!-- manual input -->
+          <div id="manualInput" class="manual-input card" style="display: none">
+            <h4>Enter Nutrition Manually</h4>
+
+            <input type="number" id="manualCalories" placeholder="Calories" />
+            <input type="number" id="manualProtein" placeholder="Protein (g)" />
+            <input type="number" id="manualCarbs" placeholder="Carbs (g)" />
+            <input type="number" id="manualFats" placeholder="Fats (g)" />
+
+            <button onclick="useManualData()">Use This Data</button>
+          </div>
+
+          <!-- progress -->
+          <div class="progress-section">
+            <p id="remainingCalories">Remaining: 0 kcal</p>
+            <div class="progress-bar">
+              <div id="calorieBar"></div>
+            </div>
+
+            <p id="remainingMacros">Protein: 0g | Carbs: 0g | Fats: 0g</p>
+          </div>
+
+          <!--hitsotry -->
+          <div class="history">
+            <h4>Food History</h4>
+            <ul id="foodList"></ul>
+          </div>
+          <div class="saved-foods card">
+            <h4>Saved Foods</h4>
+            <ul id="savedFoodsList"></ul>
+          </div>
+          <!-- reset -->
+          <button onclick="resetDay()" class="reset-btn">Reset</button>
+          <button onclick="clearLearnedFoods()" class="reset-btn">
+            Clear Saved Foods
+          </button>
+        </div>
       </div>
-
-      <p id="remainingMacros">Protein: 0g | Carbs: 0g | Fats: 0g</p>
     </div>
-
-    <!-- FOOD HISTORY -->
-    <div class="history">
-      <h4>Food History</h4>
-      <ul id="foodList"></ul>
-    </div>
-
-    <!--reset button--> 
-    <button onclick="resetDay()" class="reset-btn">Reset</button>
-  </div>
-</div>
 
     <script src="script.js"></script>
   </body>
