@@ -1,4 +1,7 @@
-/* BASE */
+input,
+select {
+  box-sizing: border-box;
+}
 body {
   font-family: "Segoe UI", sans-serif;
   background: #020617;
@@ -11,7 +14,6 @@ body {
   margin: 0;
 }
 
-/* MAIN */
 .main {
   display: flex;
   width: 95%;
@@ -19,7 +21,7 @@ body {
   gap: 40px;
 }
 
-/* PANELS */
+/* panels */
 .left,
 .right {
   flex: 1;
@@ -30,14 +32,14 @@ body {
   border: 1px solid rgba(34, 197, 94, 0.15);
 }
 
-/* TITLE */
+/* title */
 .panel-title {
   margin-bottom: 20px;
   font-weight: 600;
   color: #e2e8f0;
 }
 
-/* INPUTS */
+/* input ui */
 input,
 select {
   width: 100%;
@@ -56,7 +58,7 @@ select:focus {
   border-color: #22c55e;
 }
 
-/* BUTTON */
+/* buttons ui */
 button {
   width: 100%;
   padding: 12px;
@@ -74,14 +76,14 @@ button:hover {
   opacity: 0.9;
 }
 
-/* RESULT CARD */
+/* result tab */
 #result {
   background: #020617;
   padding: 15px;
   border-radius: 10px;
 }
 
-/* DASHBOARD */
+/* dashboard */
 .dashboard {
   display: flex;
   flex-direction: column;
@@ -94,7 +96,7 @@ button:hover {
   border-radius: 10px;
 }
 
-/* TRACKER */
+/* food tracker */
 .food-tracker {
   margin-top: 20px;
   padding: 15px;
@@ -102,7 +104,7 @@ button:hover {
   background: rgba(30, 41, 59, 0.6);
 }
 
-/* PROGRESS BAR */
+/* progress line */
 .progress-bar {
   width: 100%;
   height: 10px;
@@ -119,7 +121,7 @@ button:hover {
   transition: width 0.3s ease;
 }
 
-/* HISTORY */
+/* history */
 .history {
   margin-top: 15px;
 }
@@ -137,7 +139,7 @@ button:hover {
   font-size: 14px;
 }
 
-/* TEXT */
+/* txt */
 #remainingCalories {
   font-weight: bold;
   color: #4ade80;
@@ -148,12 +150,11 @@ button:hover {
   color: #94a3b8;
 }
 
-/* PLACEHOLDER */
 ::placeholder {
   color: #64748b;
 }
 
-/* VIDEO */
+/* bgvideo */
 #bgVideo {
   position: fixed;
   top: 0;
@@ -165,7 +166,7 @@ button:hover {
   opacity: 0.08;
 }
 
-/* INTERACTIVE GLOW */
+/* glow on hover*/
 .left:hover,
 .right:hover {
   box-shadow: 0 0 25px rgba(34, 197, 94, 0.25);
@@ -201,7 +202,6 @@ button:active {
   box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
 }
 
-/* RESET BUTTON */
 .reset-btn {
   margin-top: 15px;
   background: #ef4444;
@@ -211,8 +211,6 @@ button:active {
 .reset-btn:hover {
   box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
 }
-
-/* SUMMARY */
 .summary-box {
   display: flex;
   flex-direction: column;
@@ -258,7 +256,7 @@ button:active {
   transform: translateY(-2px);
 }
 
-/*  MOBILE FIX (FINAL) */
+/*  mobile vertical ui */
 @media (max-width: 768px) {
   .main {
     flex-direction: column;
@@ -331,7 +329,7 @@ html {
     transform: translateY(0);
   }
 }
-/* 🔥 MANUAL INPUT BOX */
+
 .manual-input {
   margin-top: 15px;
   padding: 12px;
@@ -342,32 +340,22 @@ html {
   gap: 8px;
   transition: 0.2s;
 }
-
-/* TITLE */
 .manual-input h4 {
   font-size: 14px;
   color: #94a3b8;
   margin-bottom: 5px;
 }
-
-/* INPUTS INSIDE */
 .manual-input input {
   padding: 10px;
   font-size: 14px;
 }
-
-/* BUTTON */
 .manual-input button {
   background: #22c55e;
   color: black;
 }
-
-/* HOVER GLOW */
 .manual-input:hover {
   box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
 }
-
-/* 🧠 SAVED FOODS */
 .saved-foods {
   margin-top: 15px;
 }
@@ -393,13 +381,31 @@ html {
   background: #ef4444;
   color: white;
   border: none;
-  padding: 4px 8px; /* 🔥 smaller */
+  padding: 4px 8px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 12px; /* 🔥 smaller text */
-  width: auto; /* 🔥 IMPORTANT (removes full width) */
+  font-size: 12px;
+  width: auto;
 }
 
 .delete-btn:hover {
   box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+.password-box {
+  position: relative;
+  width: 100%;
+}
+
+.password-box input {
+  width: 100%;
+  padding-right: 40px;
+  box-sizing: border-box;
+}
+
+.toggle-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
 }

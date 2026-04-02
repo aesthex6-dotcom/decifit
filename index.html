@@ -6,13 +6,25 @@
     <title>Deficit</title>
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <video autoplay muted loop id="bgVideo">
       <source src="anime.mp4" type="video/mp4" />
     </video>
+    <div id="authBox" class="card">
+      <h3>Login / Signup</h3>
 
+      <input type="email" id="email" placeholder="Email" />
+
+      <div class="password-box">
+        <input type="password" id="password" placeholder="Password" />
+        <span onclick="togglePassword()" class="toggle-eye">👁️</span>
+      </div>
+
+      <button onclick="signup()">Sign Up</button>
+      <button onclick="login()">Login</button>
+    </div>
     <div class="main">
-      <!-- left side -->
       <div class="left">
         <h1>Decifit</h1>
         <p>Know Your calories</p>
@@ -49,7 +61,6 @@
         </div>
       </div>
 
-      <!-- right side -->
       <div class="right">
         <h2 class="panel-title">Your Plan</h2>
 
@@ -59,21 +70,15 @@
           </div>
         </div>
 
-        <!--tracker -->
         <div class="food-tracker card" id="tracker" style="display: none">
           <h3>Track Your Intake</h3>
 
           <div class="tracker-inputs">
             <input type="text" id="foodName" placeholder="Food (e.g. rice)" />
-            <input
-              type="number"
-              id="foodQuantity"
-              placeholder="Quantity (grams / pieces)"
-            />
+            <input type="number" id="foodQuantity" placeholder="Quantity" />
             <button onclick="addFood()">Add Food</button>
           </div>
 
-          <!-- manual input -->
           <div id="manualInput" class="manual-input card" style="display: none">
             <h4>Enter Nutrition Manually</h4>
 
@@ -85,9 +90,9 @@
             <button onclick="useManualData()">Use This Data</button>
           </div>
 
-          <!-- progress -->
           <div class="progress-section">
             <p id="remainingCalories">Remaining: 0 kcal</p>
+
             <div class="progress-bar">
               <div id="calorieBar"></div>
             </div>
@@ -95,16 +100,16 @@
             <p id="remainingMacros">Protein: 0g | Carbs: 0g | Fats: 0g</p>
           </div>
 
-          <!--hitsotry -->
           <div class="history">
             <h4>Food History</h4>
             <ul id="foodList"></ul>
           </div>
+
           <div class="saved-foods card">
             <h4>Saved Foods</h4>
             <ul id="savedFoodsList"></ul>
           </div>
-          <!-- reset -->
+
           <button onclick="resetDay()" class="reset-btn">Reset</button>
           <button onclick="clearLearnedFoods()" class="reset-btn">
             Clear Saved Foods
@@ -113,6 +118,48 @@
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- firebase-->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        signOut,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        setDoc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyACk3ecAAWvwz11yKc41x_5pE3efDiC9jM",
+        authDomain: "decifit-bcbe5.firebaseapp.com",
+        projectId: "decifit-bcbe5",
+        storageBucket: "decifit-bcbe5.firebasestorage.app",
+        messagingSenderId: "33449708543",
+        appId: "1:33449708543:web:8e80ba93eedf80e111f5ca",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      window.auth = auth;
+      const db = getFirestore(app);
+
+      // make global
+      window.db = db;
+      window.doc = doc;
+      window.setDoc = setDoc;
+      window.getDoc = getDoc;
+
+      window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+      window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+      window.signOut = signOut;
+      window.onAuthStateChanged = onAuthStateChanged;
+    </script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>

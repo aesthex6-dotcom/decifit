@@ -1,6 +1,9 @@
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelector(".main").style.display = "none";
+});
 // food learning
 let learnedFoods = JSON.parse(localStorage.getItem("learnedFoods")) || {};
-// TOTAL TARGETS
+//total stuff
 let totalCalories = 0;
 let totalProtein = 0;
 let totalCarbs = 0;
@@ -49,7 +52,10 @@ function updateProgress() {
 }
 
 // save data
-function saveData() {
+async function saveData() {
+  const user = auth.currentUser;
+  if (!user) return;
+
   const data = {
     remainingCaloriesGlobal,
     remainingProtein,
@@ -62,17 +68,24 @@ function saveData() {
     history: document.getElementById("foodList").innerHTML,
   };
 
-  localStorage.setItem("decifitData", JSON.stringify(data));
+  try {
+    await setDoc(doc(db, "users", user.uid), data);
+
+    // backup locally
+    localStorage.setItem("decifitData", JSON.stringify(data));
+  } catch (err) {
+    console.error("Firestore save error:", err);
+  }
 }
 
-// SCROLL
+// scroll logic for phone ui
 function scrollToResults() {
   document.getElementById("result").scrollIntoView({
     behavior: "smooth",
   });
 }
 
-function calculate() {
+window.calculate = function () {
   let age = document.getElementById("age").value;
   let height = document.getElementById("height").value;
   let weight = document.getElementById("weight").value;
@@ -162,8 +175,6 @@ function calculate() {
   remainingProtein = totalProtein;
   remainingCarbs = totalCarbs;
   remainingFats = totalFats;
-
-  //  RESTORE DASHBOARD UI
   document.getElementById("result").innerHTML = `
     <div class="dashboard fade-in">
 
@@ -199,7 +210,7 @@ function calculate() {
   updateProgress();
   saveData();
   scrollToResults();
-}
+};
 // delete food from memory
 function deleteFood(food) {
   delete learnedFoods[food];
@@ -223,14 +234,13 @@ function renderSavedFoods() {
   }
 }
 //function to clear food
-function clearLearnedFoods() {
+window.clearLearnedFoods = function () {
   localStorage.removeItem("learnedFoods");
   learnedFoods = {};
   alert("Saved foods cleared");
   renderSavedFoods();
-}
-//  MAIN FUNCTION
-function addFood() {
+};
+window.addFood = function () {
   let food = document.getElementById("foodName").value.toLowerCase().trim();
   let quantity = Number(document.getElementById("foodQuantity").value);
 
@@ -241,7 +251,6 @@ function addFood() {
 
   let item = foodDatabase[food] || learnedFoods[food];
 
-  //  IF FOOD EXISTS IN DATABASE
   if (item) {
     let factor = item.type === "weight" ? quantity / 100 : quantity;
 
@@ -250,21 +259,19 @@ function addFood() {
     let carbs = item.carbs * factor;
     let fats = item.fats * factor;
 
-    // HIDE MANUAL INPUT IF VISIBLE
     document.getElementById("manualInput").style.display = "none";
 
     updateTracking(food, quantity, calories, protein, carbs, fats);
     return;
   }
 
-  //  NOT FOUND → SHOW MANUAL INPUT
   pendingFood = food;
   pendingQuantity = quantity;
 
   document.getElementById("manualInput").style.display = "block";
-}
-//  MANUAL INPUT FUNCTION
-function useManualData() {
+};
+//  plan B
+window.useManualData = function () {
   if (!pendingFood) return;
   let calories = Number(document.getElementById("manualCalories").value);
   let protein = Number(document.getElementById("manualProtein").value);
@@ -289,7 +296,7 @@ function useManualData() {
     );
     return;
   }
-  // SAVE LEARNED FOOD
+
   learnedFoods[pendingFood] = {
     type: "weight",
     calories: calories / (pendingQuantity / 100),
@@ -300,7 +307,6 @@ function useManualData() {
   renderSavedFoods();
 
   localStorage.setItem("learnedFoods", JSON.stringify(learnedFoods));
-  // HIDE BOX AFTER USE
   document.getElementById("manualInput").style.display = "none";
 
   // CLEAR INPUTS
@@ -308,9 +314,8 @@ function useManualData() {
   document.getElementById("manualProtein").value = "";
   document.getElementById("manualCarbs").value = "";
   document.getElementById("manualFats").value = "";
-}
+};
 
-// UPDATE TRACKING
 function updateTracking(food, quantity, calories, protein, carbs, fats) {
   remainingCaloriesGlobal -= calories;
   remainingProtein -= protein;
@@ -334,29 +339,57 @@ function updateTracking(food, quantity, calories, protein, carbs, fats) {
   document.getElementById("foodQuantity").value = "";
 }
 
-// LOAD
 window.onload = function () {
   let saved = localStorage.getItem("decifitData");
-  if (!saved) return;
+  if (saved) {
+    let data = JSON.parse(saved);
 
-  let data = JSON.parse(saved);
+    remainingCaloriesGlobal = data.remainingCaloriesGlobal;
+    remainingProtein = data.remainingProtein;
+    remainingCarbs = data.remainingCarbs;
+    remainingFats = data.remainingFats;
 
-  remainingCaloriesGlobal = data.remainingCaloriesGlobal;
-  remainingProtein = data.remainingProtein;
-  remainingCarbs = data.remainingCarbs;
-  remainingFats = data.remainingFats;
+    totalCalories = data.totalCalories;
 
-  totalCalories = data.totalCalories;
+    document.getElementById("tracker").style.display = "block";
+    document.getElementById("foodList").innerHTML = data.history;
 
-  document.getElementById("tracker").style.display = "block";
-  document.getElementById("foodList").innerHTML = data.history;
+    updateProgress();
+    renderSavedFoods();
+  }
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      document.getElementById("authBox").style.display = "none";
+      document.querySelector(".main").style.display = "flex";
 
-  updateProgress();
-  renderSavedFoods();
+      try {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+
+          remainingCaloriesGlobal = data.remainingCaloriesGlobal;
+          remainingProtein = data.remainingProtein;
+          remainingCarbs = data.remainingCarbs;
+          remainingFats = data.remainingFats;
+
+          totalCalories = data.totalCalories;
+
+          document.getElementById("tracker").style.display = "block";
+          document.getElementById("foodList").innerHTML = data.history;
+
+          updateProgress();
+        }
+      } catch (err) {
+        console.error("Firestore load error:", err);
+      }
+    }
+  });
 };
 
 // RESET
-function resetDay() {
+window.resetDay = function () {
   localStorage.removeItem("decifitData");
 
   document.getElementById("tracker").style.display = "none";
@@ -364,4 +397,47 @@ function resetDay() {
 
   document.getElementById("foodList").innerHTML = "";
   document.getElementById("calorieBar").style.width = "0%";
-}
+};
+
+window.signup = function () {
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Account created!");
+    })
+    .catch((err) => alert(err.message));
+};
+
+window.login = function () {
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Logged in!");
+      document.getElementById("authBox").style.display = "none";
+      document.querySelector(".main").style.display = "flex";
+    })
+    .catch((err) => alert(err.message));
+};
+
+window.logout = function () {
+  signOut(auth).then(() => location.reload());
+};
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    document.getElementById("authBox").style.display = "none";
+    document.querySelector(".main").style.display = "flex";
+  }
+});
+window.togglePassword = function () {
+  let input = document.getElementById("password");
+
+  if (input.type === "password") {
+    input.type = "text";
+  } else {
+    input.type = "password";
+  }
+};
