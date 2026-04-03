@@ -1,0 +1,554 @@
+[
+  {
+    "name": "Flat Bench Press",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Incline Bench Press",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Decline Bench Press",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Dumbbell Bench Press",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Incline Dumbbell Press",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Decline Dumbbell Press",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Chest Fly (Machine)",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Dumbbell Fly",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Cable Fly",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Low to High Cable Fly",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "High to Low Cable Fly",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Push Ups",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Decline Push Ups",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Incline Push Ups",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Chest Dips",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Weighted Dips",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Smith Machine Bench Press",
+    "bodyPart": "Chest",
+    "img": "https://via.placeholder.com/100"
+  },
+
+  {
+    "name": "Pull Up",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Chin Up",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Lat Pulldown",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Wide Grip Lat Pulldown",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Close Grip Lat Pulldown",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Barbell Row",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Bent Over Row",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "T-Bar Row",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Seated Cable Row",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "One Arm Dumbbell Row",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Chest Supported Row",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Machine Row",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Face Pull",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Straight Arm Pulldown",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Deadlift",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Rack Pull",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Hyperextensions",
+    "bodyPart": "Back",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Barbell Curl",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Dumbbell Curl",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Hammer Curl",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Incline Dumbbell Curl",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Preacher Curl",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Cable Curl",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Concentration Curl",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "EZ Bar Curl",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Spider Curl",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Reverse Curl",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Tricep Pushdown",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Overhead Tricep Extension",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Skull Crushers",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Close Grip Bench Press",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Dips",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Cable Overhead Extension",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Rope Pushdown",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Single Arm Pushdown",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Kickbacks",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Bench Dips",
+    "bodyPart": "Arms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Plate Pinches",
+    "bodyPart": "Forearms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Farmer Carries",
+    "bodyPart": "Forearms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Reverse Grip Curl",
+    "bodyPart": "Forearms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Dumbbell Wrist Curl",
+    "bodyPart": "Forearms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Dumbbell Wrist Extension",
+    "bodyPart": "Forearms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Hammer Curl",
+    "bodyPart": "Forearms",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Overhead Press",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Dumbbell Shoulder Press",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Arnold Press",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Machine Shoulder Press",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Lateral Raise",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Dumbbell Lateral Raise",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Cable Lateral Raise",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Front Raise",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Dumbbell Front Raise",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Rear Delt Fly",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Reverse Pec Deck",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Face Pull",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Upright Row",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Barbell Shoulder Press",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Smith Machine Shoulder Press",
+    "bodyPart": "Shoulders",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Barbell Squat",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Back Squat",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Front Squat",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Hack Squat",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Leg Press",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Bulgarian Split Squat",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Walking Lunges",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Dumbbell Lunges",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Smith Machine Squat",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Leg Extension",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Sissy Squat",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Goblet Squat",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Step Ups",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Wall Sit",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Hip Thrust",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Barbell Hip Thrust",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Glute Bridge",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Romanian Deadlift",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Stiff Leg Deadlift",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Cable Kickback",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Glute Kickback Machine",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Bulgarian Split Squat",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Step Ups",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Walking Lunges",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Sumo Squat",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Cable Pull Through",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Abduction Machine",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Banded Glute Bridge",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Single Leg Glute Bridge",
+    "bodyPart": "Glutes",
+    "img": "https://via.placeholder.com/100"
+  },
+
+  {
+    "name": "Standing Calf Raise",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Seated Calf Raise",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Leg Press Calf Raise",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Donkey Calf Raise",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Single Leg Calf Raise",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  },
+  {
+    "name": "Smith Machine Calf Raise",
+    "bodyPart": "Legs",
+    "img": "https://via.placeholder.com/100"
+  }
+]

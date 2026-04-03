@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Montserrat:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Deficit</title>
@@ -18,15 +23,191 @@
 
       <div class="password-box">
         <input type="password" id="password" placeholder="Password" />
-        <span onclick="togglePassword()" class="toggle-eye">👁️</span>
+        <span onclick="togglePassword()" class="toggle-eye">
+          <i data-lucide="eye"></i>
+        </span>
       </div>
 
       <button onclick="signup()">Sign Up</button>
       <button onclick="login()">Login</button>
     </div>
+    <button onclick="logout()" class="logout-btn top-logout">Logout</button>
+    <div id="selectionScreen" class="selection-screen" style="display: none">
+      <h1>KcalClub</h1>
+      <p>The only tool for your dream physique</p>
+
+      <div class="selection-container">
+        <div class="selection-card">
+          <h2>Diet Plan</h2>
+          <p>Your first component for a better physique</p>
+          <button onclick="goToDiet()">Proceed</button>
+        </div>
+
+        <div class="selection-card">
+          <h2>Workout Plan</h2>
+          <p>Your second component for a better physique</p>
+          <button onclick="goToWorkout()">Proceed</button>
+        </div>
+      </div>
+      <div class="quote-box">
+        <p id="typing-text"></p>
+      </div>
+    </div>
+    <div id="workoutScreen" style="display: none" class="workout-screen">
+      <button onclick="goBackToSelection()" class="back-btn">← Back</button>
+      <h1>WORKOUT SPLIT</h1>
+
+      <div class="workout-layout">
+        <!-- LEFT: DAYS -->
+        <div class="days-section">
+          <div class="day-block">
+            <h3>Monday</h3>
+
+            <button onclick="selectDay('monday')" class="select-btn">
+              Select
+            </button>
+            <div class="exercise-list" id="monday-workout"></div>
+            <div class="manual-add">
+              <input
+                type="text"
+                placeholder="Add custom exercise"
+                id="monday-input"
+              />
+              <button onclick="addCustomExercise('monday')">Add</button>
+            </div>
+          </div>
+
+          <div class="day-block">
+            <h3>Tuesday</h3>
+            <div class="exercise-list" id="tuesday"></div>
+            <button onclick="selectDay('tuesday')" class="select-btn">
+              Select
+            </button>
+            <div class="exercise-list" id="tuesday-workout"></div>
+            <div class="manual-add">
+              <input
+                type="text"
+                placeholder="Add custom exercise"
+                id="tuesday-input"
+              />
+              <button onclick="addCustomExercise('tuesday')">Add</button>
+            </div>
+          </div>
+
+          <div class="day-block">
+            <h3>Wednesday</h3>
+            <div class="exercise-list" id="Wednesday-workout"></div>
+            <button onclick="selectDay('Wednesday')" class="select-btn">
+              Select
+            </button>
+            <div class="exercise-list" id="Wednesday"></div>
+            <div class="manual-add">
+              <input
+                type="text"
+                placeholder="Add custom exercise"
+                id="Wednesday-input"
+              />
+              <button onclick="addCustomExercise('Wednesday')">Add</button>
+            </div>
+          </div>
+
+          <div class="day-block">
+            <h3>Thursday</h3>
+            <div class="exercise-list" id="thursday"></div>
+            <button onclick="selectDay('thursday')" class="select-btn">
+              Select
+            </button>
+            <div class="exercise-list" id="thursday-workout"></div>
+            <div class="manual-add">
+              <input
+                type="text"
+                placeholder="Add custom exercise"
+                id="thursday-input"
+              />
+              <button onclick="addCustomExercise('thursday')">Add</button>
+            </div>
+          </div>
+
+          <div class="day-block">
+            <h3>Friday</h3>
+            <div class="exercise-list" id="friday"></div>
+            <button onclick="selectDay('friday')" class="select-btn">
+              Select
+            </button>
+            <div class="exercise-list" id="friday-workout"></div>
+            <div class="manual-add">
+              <input
+                type="text"
+                placeholder="Add custom exercise"
+                id="friday-input"
+              />
+              <button onclick="addCustomExercise('friday')">Add</button>
+            </div>
+          </div>
+
+          <div class="day-block">
+            <h3>Saturday</h3>
+            <div class="exercise-list" id="saturday"></div>
+            <button onclick="selectDay('saturday')" class="select-btn">
+              Select
+            </button>
+            <div class="exercise-list" id="saturday-workout"></div>
+            <div class="manual-add">
+              <input
+                type="text"
+                placeholder="Add custom exercise"
+                id="saturday-input"
+              />
+              <button onclick="addCustomExercise('saturday')">Add</button>
+            </div>
+          </div>
+
+          <div class="day-block">
+            <h3>Sunday</h3>
+            <div class="exercise-list" id="sunday-workout"></div>
+
+            <button onclick="selectDay('sunday')" class="select-btn">
+              Select
+            </button>
+            <div class="exercise-list" id="sunday-workout"></div>
+            <div class="manual-add">
+              <input
+                type="text"
+                placeholder="Add custom exercise"
+                id="sunday-input"
+              />
+              <button onclick="addCustomExercise('sunday')">Add</button>
+            </div>
+          </div>
+          <button onclick="saveWorkoutToCloud()" class="save-workout-btn">
+            Save Workout
+          </button>
+        </div>
+
+        <!-- RIGHT: EXERCISE POOL -->
+        <div class="exercise-pool">
+          <h3>Exercise Pool</h3>
+
+          <div class="filter-dropdown">
+            <select id="muscleFilter" onchange="filterByDropdown()">
+              <option value="All">All</option>
+              <option value="Chest">Chest</option>
+              <option value="Back">Back</option>
+              <option value="Arms">Arms</option>
+              <option value="Forearms">Forearms</option>
+              <option value="Shoulders">Shoulders</option>
+              <option value="Legs">Legs</option>
+              <option value="Glutes">Glutes</option>
+            </select>
+          </div>
+          <div id="exerciseContainer"></div>
+        </div>
+      </div>
+    </div>
     <div class="main">
+      <button onclick="goBackToSelection()" class="back-btn">← Back</button>
       <div class="left">
-        <h1>Decifit</h1>
+        <h1>U2Lean</h1>
         <p>Know Your calories</p>
 
         <div class="form">
@@ -161,5 +342,43 @@
       window.onAuthStateChanged = onAuthStateChanged;
     </script>
     <script type="module" src="script.js"></script>
+    <div class="footer">
+      <p>Built by Himanshu Arya</p>
+
+      <div class="socials">
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/aesthe_x" target="_blank">
+          <svg
+            role="img"
+            viewBox="0 0 24 24"
+            width="22"
+            height="22"
+            fill="#E4405F"
+          >
+            <path
+              d="M12 2.2c3.2 0 3.6 0 4.9.1 3.2.1 4.7 1.7 4.8 4.8.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 3.2-1.7 4.7-4.8 4.8-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-3.2-.1-4.7-1.7-4.8-4.8C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-3.2 1.7-4.7 4.8-4.8C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.8.1-2.5.1-3.6 1.3-3.7 3.7-.1 1.3-.1 1.7-.1 4.8s0 3.5.1 4.8c.1 2.5 1.3 3.6 3.7 3.7 1.3.1 1.7.1 4.8.1s3.5 0 4.8-.1c2.5-.1 3.6-1.3 3.7-3.7.1-1.3.1-1.7.1-4.8s0-3.5-.1-4.8c-.1-2.5-1.3-3.6-3.7-3.7-1.3-.1-1.7-.1-4.8-.1zm0 3.1a5 5 0 110 10 5 5 0 010-10zm0 1.8a3.2 3.2 0 100 6.4 3.2 3.2 0 000-6.4zm5.2-.9a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+            />
+          </svg>
+        </a>
+
+        <!-- Gmail -->
+        <a href="mailto:aesthex6@gmail.com">
+          <svg
+            role="img"
+            viewBox="0 0 24 24"
+            width="22"
+            height="22"
+            fill="#EA4335"
+          >
+            <path
+              d="M12 12.713l-11.99-9.713h23.98L12 12.713zm0 2.574l-12-9.714V21h7v-6h10v6h7V5.573l-12 9.714z"
+            />
+          </svg>
+        </a>
+      </div>
+    </div>
+    <script>
+      lucide.createIcons();
+    </script>
   </body>
 </html>

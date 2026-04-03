@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelector(".main").style.display = "none";
+  document.getElementById("workoutScreen").style.display = "none";
+  document.getElementById("selectionScreen").style.display = "none";
 });
 // food learning
 let learnedFoods = JSON.parse(localStorage.getItem("learnedFoods")) || {};
@@ -273,43 +275,37 @@ window.addFood = function () {
 //  plan B
 window.useManualData = function () {
   if (!pendingFood) return;
+
   let calories = Number(document.getElementById("manualCalories").value);
   let protein = Number(document.getElementById("manualProtein").value);
   let carbs = Number(document.getElementById("manualCarbs").value);
   let fats = Number(document.getElementById("manualFats").value);
 
-  if (!calories) {
-    alert("Enter valid manual data");
+  if (calories <= 0 || protein < 0 || carbs < 0 || fats < 0) {
+    alert("Enter valid nutrition values");
     return;
   }
 
+  // ✅ update ONLY ONCE
   updateTracking(pendingFood, pendingQuantity, calories, protein, carbs, fats);
-  // for avoiding data poisoning
-  if (!confirm("Save this food for future use?")) {
-    updateTracking(
-      pendingFood,
-      pendingQuantity,
-      calories,
-      protein,
-      carbs,
-      fats,
-    );
-    return;
+
+  // ask for saving AFTER tracking
+  if (confirm("Save this food for future use?")) {
+    learnedFoods[pendingFood] = {
+      type: "weight",
+      calories: calories / (pendingQuantity / 100),
+      protein: protein / (pendingQuantity / 100),
+      carbs: carbs / (pendingQuantity / 100),
+      fats: fats / (pendingQuantity / 100),
+    };
+
+    localStorage.setItem("learnedFoods", JSON.stringify(learnedFoods));
+    renderSavedFoods();
   }
 
-  learnedFoods[pendingFood] = {
-    type: "weight",
-    calories: calories / (pendingQuantity / 100),
-    protein: protein / (pendingQuantity / 100),
-    carbs: carbs / (pendingQuantity / 100),
-    fats: fats / (pendingQuantity / 100),
-  };
-  renderSavedFoods();
-
-  localStorage.setItem("learnedFoods", JSON.stringify(learnedFoods));
   document.getElementById("manualInput").style.display = "none";
 
-  // CLEAR INPUTS
+  // clear inputs
   document.getElementById("manualCalories").value = "";
   document.getElementById("manualProtein").value = "";
   document.getElementById("manualCarbs").value = "";
@@ -357,10 +353,11 @@ window.onload = function () {
     updateProgress();
     renderSavedFoods();
   }
+  loadExercises();
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       document.getElementById("authBox").style.display = "none";
-      document.querySelector(".main").style.display = "flex";
+      document.getElementById("selectionScreen").style.display = "block";
 
       try {
         const docRef = doc(db, "users", user.uid);
@@ -384,6 +381,12 @@ window.onload = function () {
       } catch (err) {
         console.error("Firestore load error:", err);
       }
+    }
+    document.querySelector(".logout-btn").style.display = user
+      ? "block"
+      : "none";
+    if (user) {
+      loadWorkoutFromCloud(user);
     }
   });
 };
@@ -418,26 +421,303 @@ window.login = function () {
     .then(() => {
       alert("Logged in!");
       document.getElementById("authBox").style.display = "none";
-      document.querySelector(".main").style.display = "flex";
+      document.getElementById("selectionScreen").style.display = "block";
     })
     .catch((err) => alert(err.message));
 };
 
 window.logout = function () {
-  signOut(auth).then(() => location.reload());
+  signOut(auth)
+    .then(() => {
+      document.getElementById("authBox").style.display = "block";
+      document.querySelector(".main").style.display = "none";
+
+      // optional: clear inputs
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+    })
+    .catch((err) => alert(err.message));
 };
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    document.getElementById("authBox").style.display = "none";
-    document.querySelector(".main").style.display = "flex";
-  }
-});
+
 window.togglePassword = function () {
   let input = document.getElementById("password");
+  let icon = document.querySelector(".toggle-eye i");
 
   if (input.type === "password") {
     input.type = "text";
+    icon.setAttribute("data-lucide", "eye-off");
   } else {
     input.type = "password";
+    icon.setAttribute("data-lucide", "eye");
+  }
+
+  lucide.createIcons(); // refresh icon
+};
+window.goToDiet = function () {
+  document.getElementById("selectionScreen").style.display = "none";
+  document.getElementById("workoutScreen").style.display = "none";
+  document.querySelector(".main").style.display = "flex";
+};
+
+window.goToWorkout = function () {
+  document.getElementById("selectionScreen").style.display = "none";
+  document.querySelector(".main").style.display = "none";
+  document.getElementById("workoutScreen").style.display = "block";
+};
+
+window.saveWorkout = function () {
+  let selects = document.querySelectorAll(".day-card select");
+
+  let plan = [];
+
+  selects.forEach((select, index) => {
+    plan.push({
+      day: index + 1,
+      workout: select.value,
+    });
+  });
+
+  localStorage.setItem("workoutPlan", JSON.stringify(plan));
+
+  alert("Workout plan saved");
+};
+
+let selectedDay = null;
+
+// when user clicks "Add" on a day
+window.selectDay = function (day) {
+  selectedDay = day;
+};
+
+// when user clicks + on exercise
+window.addExercise = function (exercise) {
+  if (!selectedDay) {
+    alert("Select a day first");
+    return;
+  }
+
+  let container = document.getElementById(`${selectedDay}-workout`);
+  let div = document.createElement("div");
+  div.className = "exercise-item";
+
+  div.innerHTML = `
+    <span>${exercise}</span>
+    <button class="delete-exercise" onclick="this.parentElement.remove()">✖</button>
+  `;
+
+  container.appendChild(div);
+};
+
+let exerciseData = {};
+
+async function loadExercises() {
+  try {
+    const res = await fetch("exercises.json");
+    const data = await res.json();
+
+    // group by body part
+    data.forEach((ex) => {
+      let category = ex.bodyPart;
+
+      if (!exerciseData[category]) {
+        exerciseData[category] = [];
+      }
+
+      exerciseData[category].push({
+        name: ex.name,
+        img: ex.img,
+      });
+    });
+
+    renderExercises();
+  } catch (err) {
+    console.error("Error loading exercises:", err);
+  }
+}
+
+function renderExercises() {
+  const container = document.getElementById("exerciseContainer");
+  container.innerHTML = "";
+
+  for (let part in exerciseData) {
+    const groupDiv = document.createElement("div");
+    groupDiv.className = "exercise-group";
+
+    const title = document.createElement("h4");
+    title.innerText = part;
+
+    const grid = document.createElement("div");
+    grid.className = "exercise-grid";
+
+    exerciseData[part].forEach((ex) => {
+      const card = document.createElement("div");
+      card.className = "exercise-card";
+
+      card.innerHTML = `
+       <img src="${ex.img}" onerror="this.style.display='none'">
+        <p>${ex.name}</p>
+        <button onclick="addExercise('${ex.name}')">+</button>
+      `;
+
+      grid.appendChild(card);
+    });
+
+    groupDiv.appendChild(title);
+    groupDiv.appendChild(grid);
+    container.appendChild(groupDiv);
+  }
+}
+
+// filter function
+window.filterBy = function (category) {
+  const groups = document.querySelectorAll(".exercise-group");
+
+  groups.forEach((group) => {
+    const title = group.querySelector("h4").innerText;
+
+    if (category === "All" || title === category) {
+      group.style.display = "block";
+    } else {
+      group.style.display = "none";
+    }
+  });
+};
+window.filterByDropdown = function () {
+  const selected = document.getElementById("muscleFilter").value;
+  const groups = document.querySelectorAll(".exercise-group");
+
+  groups.forEach((group) => {
+    const title = group.querySelector("h4").innerText;
+
+    if (selected === "All" || title === selected) {
+      group.style.display = "block";
+    } else {
+      group.style.display = "none";
+    }
+  });
+};
+
+window.addCustomExercise = function (day) {
+  const input = document.getElementById(`${day}-input`);
+  const value = input.value.trim();
+
+  if (!value) return;
+
+  let container = document.getElementById(`${day}-workout`);
+
+  let div = document.createElement("div");
+  div.className = "exercise-item";
+
+  div.innerHTML = `
+    <span>${value}</span>
+    <button class="delete-exercise" onclick="this.parentElement.remove()">✖</button>
+  `;
+
+  container.appendChild(div);
+
+  input.value = "";
+};
+// saving plan
+window.saveWorkoutToCloud = async function () {
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Login first");
+    return;
+  }
+
+  const days = [
+    "monday",
+    "tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
+  let plan = {};
+
+  days.forEach((day) => {
+    const container = document.getElementById(`${day}-workout`);
+    const exercises = container.querySelectorAll("span");
+
+    plan[day] = [];
+
+    exercises.forEach((ex) => {
+      plan[day].push(ex.innerText);
+    });
+  });
+
+  try {
+    await setDoc(
+      doc(db, "users", user.uid),
+      {
+        workoutPlan: plan,
+      },
+      { merge: true },
+    );
+
+    alert("Workout saved to cloud 💪");
+  } catch (err) {
+    console.error(err);
+    alert("Error saving workout");
   }
 };
+
+async function loadWorkoutFromCloud(user) {
+  try {
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) return;
+
+    const data = docSnap.data();
+    const plan = data.workoutPlan;
+
+    if (!plan) return;
+
+    for (let day in plan) {
+      const container = document.getElementById(`${day}-workout`);
+      container.innerHTML = ""; // clear old
+
+      plan[day].forEach((exercise) => {
+        let div = document.createElement("div");
+        div.className = "exercise-item";
+
+        div.innerHTML = `
+          <span>${exercise}</span>
+          <button class="delete-exercise" onclick="this.parentElement.remove()">✖</button>
+        `;
+
+        container.appendChild(div);
+      });
+    }
+  } catch (err) {
+    console.error("Load error:", err);
+  }
+}
+
+window.goBackToSelection = function () {
+  document.getElementById("workoutScreen").style.display = "none";
+  document.querySelector(".main").style.display = "none";
+  document.getElementById("selectionScreen").style.display = "block";
+};
+
+const text =
+  "The first rule of KcalClub is we DO talk about KcalClub.\nThe second rule of KcalClub is — please DO talk about KcalClub.";
+
+let index = 0;
+
+function typeEffect() {
+  const el = document.getElementById("typing-text");
+
+  if (index < text.length) {
+    el.innerHTML += text.charAt(index) === "\n" ? "<br>" : text.charAt(index);
+    index++;
+    setTimeout(typeEffect, 25);
+  }
+}
+
+window.addEventListener("load", () => {
+  typeEffect();
+});

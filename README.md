@@ -1,2 +1,3 @@
-# decifit
-A reverse calorie and macros tracking website
+# KcalClub
+
+The first rule of KcalClub is you DO talk about KcalClub
