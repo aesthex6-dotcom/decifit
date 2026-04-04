@@ -938,16 +938,15 @@ window.confirmAction = function () {
 // for phone ui
 function openPanel() {
   const panel = document.getElementById("mobileExercisePanel");
-
-  // copy exercise pool into panel
   const pool = document.getElementById("exerciseContainer");
   const mobile = document.getElementById("mobileExerciseContent");
 
+  // clone instead of move (prevents bugs)
   mobile.innerHTML = pool.innerHTML;
 
   panel.classList.add("show");
 }
 
-function closePanel() {
+window.closePanel = function () {
   document.getElementById("mobileExercisePanel").classList.remove("show");
-}
+};
