@@ -366,9 +366,17 @@ window.onload = function () {
   }
   loadExercises();
   onAuthStateChanged(auth, async (user) => {
+    const authBox = document.getElementById("authBox");
+    const selectionScreen = document.getElementById("selectionScreen");
+    const main = document.querySelector(".main");
+    const workout = document.getElementById("workoutScreen");
+
     if (user) {
-      document.getElementById("authBox").style.display = "none";
-      document.getElementById("selectionScreen").style.display = "block";
+      // 🔹 Default state after login
+      authBox.style.display = "none";
+      selectionScreen.style.display = "block";
+      main.style.display = "none";
+      workout.style.display = "none";
 
       try {
         const docRef = doc(db, "users", user.uid);
@@ -385,28 +393,28 @@ window.onload = function () {
           document.getElementById("activity").value = data.activity || "1.2";
           document.getElementById("gender").value = data.gender || "male";
 
-          // 🔹 Show main UI
-          document.querySelector(".main").style.display = "flex";
-          document.getElementById("selectionScreen").style.display = "none";
+          // 🔥 IMPORTANT CHANGE:
+          // 👉 DO NOT auto open main screen
+          // user should land on selection screen first
 
-          // 🔥 KEY STEP → rebuild full UI
+          // 🔹 BUT if you WANT auto-restore, use this:
           if (data.totalCalories) {
+            // OPTIONAL: comment this block if you want always selection first
+
+            main.style.display = "flex";
+            selectionScreen.style.display = "none";
+
             calculate();
 
-            // 🔁 Restore tracked progress AFTER calculate resets it
             remainingCaloriesGlobal = data.remainingCaloriesGlobal || 0;
             remainingProtein = data.remainingProtein || 0;
             remainingCarbs = data.remainingCarbs || 0;
             remainingFats = data.remainingFats || 0;
             totalCalories = data.totalCalories || 0;
 
-            // 🔹 Restore history
             document.getElementById("foodList").innerHTML = data.history || "";
-
-            // 🔹 Show tracker
             document.getElementById("tracker").style.display = "block";
 
-            // 🔹 Update UI values
             document.getElementById("remainingCalories").innerText =
               `Remaining: ${Math.round(remainingCaloriesGlobal)} kcal`;
 
@@ -419,12 +427,14 @@ window.onload = function () {
       } catch (err) {
         console.error("Firestore load error:", err);
       }
-    }
-    document.querySelector(".logout-btn").style.display = user
-      ? "block"
-      : "none";
-    if (user) {
+
       loadWorkoutFromCloud(user);
+    } else {
+      // 🔹 Logged out state
+      authBox.style.display = "block";
+      selectionScreen.style.display = "none";
+      main.style.display = "none";
+      workout.style.display = "none";
     }
   });
 };
@@ -541,6 +551,11 @@ let selectedDay = null;
 // when user clicks "Add" on a day
 window.selectDay = function (day) {
   selectedDay = day;
+
+  // 📱 only trigger panel on mobile
+  if (window.innerWidth <= 768) {
+    openPanel();
+  }
 };
 
 // when user clicks + on exercise
@@ -919,3 +934,20 @@ window.confirmAction = function () {
   if (confirmCallback) confirmCallback();
   closeConfirm();
 };
+
+// for phone ui
+function openPanel() {
+  const panel = document.getElementById("mobileExercisePanel");
+
+  // copy exercise pool into panel
+  const pool = document.getElementById("exerciseContainer");
+  const mobile = document.getElementById("mobileExerciseContent");
+
+  mobile.innerHTML = pool.innerHTML;
+
+  panel.classList.add("show");
+}
+
+function closePanel() {
+  document.getElementById("mobileExercisePanel").classList.remove("show");
+}
