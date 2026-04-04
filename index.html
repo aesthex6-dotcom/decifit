@@ -96,18 +96,18 @@
 
           <div class="day-block">
             <h3>Wednesday</h3>
-            <div class="exercise-list" id="Wednesday-workout"></div>
-            <button onclick="selectDay('Wednesday')" class="select-btn">
+            <div class="exercise-list" id="wednesday-workout"></div>
+            <button onclick="selectDay('wednesday')" class="select-btn">
               Select
             </button>
-            <div class="exercise-list" id="Wednesday"></div>
+            <div class="exercise-list" id="wednesday"></div>
             <div class="manual-add">
               <input
                 type="text"
                 placeholder="Add custom exercise"
-                id="Wednesday-input"
+                id="wednesday-input"
               />
-              <button onclick="addCustomExercise('Wednesday')">Add</button>
+              <button onclick="addCustomExercise('wednesday')">Add</button>
             </div>
           </div>
 
@@ -164,7 +164,6 @@
 
           <div class="day-block">
             <h3>Sunday</h3>
-            <div class="exercise-list" id="sunday-workout"></div>
 
             <button onclick="selectDay('sunday')" class="select-btn">
               Select
@@ -239,6 +238,9 @@
         <div id="userSummary" style="display: none" class="card">
           <h3>Your Profile</h3>
           <p id="summaryText"></p>
+          <button onclick="resetProfile()" class="reset-btn">
+            Edit / Reset Profile
+          </button>
         </div>
       </div>
 
@@ -380,5 +382,18 @@
     <script>
       lucide.createIcons();
     </script>
+    <div id="toast-container"></div>
+    <div id="confirmModal" class="confirm-modal" style="display: none">
+      <div class="confirm-box">
+        <p id="confirmText">Are you sure?</p>
+
+        <div class="confirm-actions">
+          <button onclick="closeConfirm()">Cancel</button>
+          <button onclick="confirmAction()" class="danger-btn">
+            Yes, Reset
+          </button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

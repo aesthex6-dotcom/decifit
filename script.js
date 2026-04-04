@@ -68,6 +68,12 @@ async function saveData() {
     totalCarbs,
     totalFats,
     history: document.getElementById("foodList").innerHTML,
+    age: document.getElementById("age").value,
+    height: document.getElementById("height").value,
+    weight: document.getElementById("weight").value,
+    goal: document.getElementById("goal").value,
+    activity: document.getElementById("activity").value,
+    gender: document.getElementById("gender").value,
   };
 
   try {
@@ -88,53 +94,57 @@ function scrollToResults() {
 }
 
 window.calculate = function () {
-  let age = document.getElementById("age").value;
-  let height = document.getElementById("height").value;
-  let weight = document.getElementById("weight").value;
-  let gender = document.getElementById("gender").value;
-  let activity = document.getElementById("activity").value;
-  let goal = document.getElementById("goal").value;
+  document.getElementById("result").innerHTML =
+    'Calculating <span class="loader"></span>';
 
-  if (!age || !height || !weight) {
-    document.getElementById("result").innerHTML = "Please fill all fields";
-    return;
-  }
+  setTimeout(() => {
+    let age = document.getElementById("age").value;
+    let height = document.getElementById("height").value;
+    let weight = document.getElementById("weight").value;
+    let gender = document.getElementById("gender").value;
+    let activity = document.getElementById("activity").value;
+    let goal = document.getElementById("goal").value;
 
-  if (age <= 0 || height <= 0 || weight <= 0) {
-    document.getElementById("result").innerHTML =
-      "Enter valid positive numbers";
-    return;
-  }
+    if (!age || !height || !weight) {
+      document.getElementById("result").innerHTML = "Please fill all fields";
+      return;
+    }
 
-  age = Number(age);
-  height = Number(height);
-  weight = Number(weight);
-  activity = Number(activity);
+    if (age <= 0 || height <= 0 || weight <= 0) {
+      document.getElementById("result").innerHTML =
+        "Enter valid positive numbers";
+      return;
+    }
 
-  let goalText =
-    goal === "lose"
-      ? "Fat Loss"
-      : goal === "gain"
-        ? "Muscle Gain"
-        : "Maintenance";
+    age = Number(age);
+    height = Number(height);
+    weight = Number(weight);
+    activity = Number(activity);
 
-  let activityText =
-    activity == 1.2
-      ? "Sedentary"
-      : activity == 1.375
-        ? "Lightly Active"
-        : activity == 1.55
-          ? "Moderately Active"
-          : "Very Active";
+    let goalText =
+      goal === "lose"
+        ? "Fat Loss"
+        : goal === "gain"
+          ? "Muscle Gain"
+          : "Maintenance";
 
-  let message =
-    goal === "lose"
-      ? "So you want to lose fat — great choice. We'll guide you into a calorie deficit while keeping your protein high to preserve muscle."
-      : goal === "gain"
-        ? "Looking to build muscle — love that. We'll help you stay in a calorie surplus with the right macros for growth."
-        : "Maintaining your physique — solid. We'll help you stay consistent and balanced with your nutrition.";
+    let activityText =
+      activity == 1.2
+        ? "Sedentary"
+        : activity == 1.375
+          ? "Lightly Active"
+          : activity == 1.55
+            ? "Moderately Active"
+            : "Very Active";
 
-  let summary = `
+    let message =
+      goal === "lose"
+        ? "So you want to lose fat — great choice. We'll guide you into a calorie deficit while keeping your protein high to preserve muscle."
+        : goal === "gain"
+          ? "Looking to build muscle — love that. We'll help you stay in a calorie surplus with the right macros for growth."
+          : "Maintaining your physique — solid. We'll help you stay consistent and balanced with your nutrition.";
+
+    let summary = `
     <div class="summary-box">
       <p class="summary-message">${message}</p>
       <div class="summary-grid">
@@ -147,37 +157,37 @@ window.calculate = function () {
     </div>
   `;
 
-  document.querySelector(".form").style.display = "none";
-  document.getElementById("userSummary").style.display = "block";
-  document.getElementById("summaryText").innerHTML = summary;
+    document.querySelector(".form").style.display = "none";
+    document.getElementById("userSummary").style.display = "block";
+    document.getElementById("summaryText").innerHTML = summary;
 
-  let bmr =
-    gender === "male"
-      ? 10 * weight + 6.25 * height - 5 * age + 5
-      : 10 * weight + 6.25 * height - 5 * age - 161;
+    let bmr =
+      gender === "male"
+        ? 10 * weight + 6.25 * height - 5 * age + 5
+        : 10 * weight + 6.25 * height - 5 * age - 161;
 
-  let maintenance = bmr * activity;
-  let target =
-    goal === "lose"
-      ? maintenance - 500
-      : goal === "gain"
-        ? maintenance + 300
-        : maintenance;
+    let maintenance = bmr * activity;
+    let target =
+      goal === "lose"
+        ? maintenance - 500
+        : goal === "gain"
+          ? maintenance + 300
+          : maintenance;
 
-  let protein = weight * 2;
-  let fats = weight * 0.8;
-  let carbs = (target - (protein * 4 + fats * 9)) / 4;
+    let protein = weight * 2;
+    let fats = weight * 0.8;
+    let carbs = (target - (protein * 4 + fats * 9)) / 4;
 
-  totalCalories = Math.round(target);
-  totalProtein = Math.round(protein);
-  totalCarbs = Math.round(carbs);
-  totalFats = Math.round(fats);
+    totalCalories = Math.round(target);
+    totalProtein = Math.round(protein);
+    totalCarbs = Math.round(carbs);
+    totalFats = Math.round(fats);
 
-  remainingCaloriesGlobal = totalCalories;
-  remainingProtein = totalProtein;
-  remainingCarbs = totalCarbs;
-  remainingFats = totalFats;
-  document.getElementById("result").innerHTML = `
+    remainingCaloriesGlobal = totalCalories;
+    remainingProtein = totalProtein;
+    remainingCarbs = totalCarbs;
+    remainingFats = totalFats;
+    document.getElementById("result").innerHTML = `
     <div class="dashboard fade-in">
 
       <div class="card">
@@ -200,18 +210,19 @@ window.calculate = function () {
     </div>
   `;
 
-  document.getElementById("tracker").style.display = "block";
-  document.getElementById("tracker").classList.add("fade-in");
+    document.getElementById("tracker").style.display = "block";
+    document.getElementById("tracker").classList.add("fade-in");
 
-  document.getElementById("remainingCalories").innerText =
-    `Remaining: ${remainingCaloriesGlobal} kcal`;
+    document.getElementById("remainingCalories").innerText =
+      `Remaining: ${remainingCaloriesGlobal} kcal`;
 
-  document.getElementById("remainingMacros").innerText =
-    `Protein: ${remainingProtein}g | Carbs: ${remainingCarbs}g | Fats: ${remainingFats}g`;
+    document.getElementById("remainingMacros").innerText =
+      `Protein: ${remainingProtein}g | Carbs: ${remainingCarbs}g | Fats: ${remainingFats}g`;
 
-  updateProgress();
-  saveData();
-  scrollToResults();
+    updateProgress();
+    saveData();
+    scrollToResults();
+  }, 600); //loading time
 };
 // delete food from memory
 function deleteFood(food) {
@@ -239,7 +250,7 @@ function renderSavedFoods() {
 window.clearLearnedFoods = function () {
   localStorage.removeItem("learnedFoods");
   learnedFoods = {};
-  alert("Saved foods cleared");
+  showToast("Saved foods cleared", "success");
   renderSavedFoods();
 };
 window.addFood = function () {
@@ -247,7 +258,7 @@ window.addFood = function () {
   let quantity = Number(document.getElementById("foodQuantity").value);
 
   if (!food || !quantity) {
-    alert("Enter food and quantity");
+    showToast("Enter food and quantity", "warning");
     return;
   }
 
@@ -282,7 +293,7 @@ window.useManualData = function () {
   let fats = Number(document.getElementById("manualFats").value);
 
   if (calories <= 0 || protein < 0 || carbs < 0 || fats < 0) {
-    alert("Enter valid nutrition values");
+    showToast("Enter valid nutrition values", "warning");
     return;
   }
 
@@ -366,17 +377,44 @@ window.onload = function () {
         if (docSnap.exists()) {
           const data = docSnap.data();
 
-          remainingCaloriesGlobal = data.remainingCaloriesGlobal;
-          remainingProtein = data.remainingProtein;
-          remainingCarbs = data.remainingCarbs;
-          remainingFats = data.remainingFats;
+          // 🔹 Restore form inputs
+          document.getElementById("age").value = data.age || "";
+          document.getElementById("height").value = data.height || "";
+          document.getElementById("weight").value = data.weight || "";
+          document.getElementById("goal").value = data.goal || "lose";
+          document.getElementById("activity").value = data.activity || "1.2";
+          document.getElementById("gender").value = data.gender || "male";
 
-          totalCalories = data.totalCalories;
+          // 🔹 Show main UI
+          document.querySelector(".main").style.display = "flex";
+          document.getElementById("selectionScreen").style.display = "none";
 
-          document.getElementById("tracker").style.display = "block";
-          document.getElementById("foodList").innerHTML = data.history;
+          // 🔥 KEY STEP → rebuild full UI
+          if (data.totalCalories) {
+            calculate();
 
-          updateProgress();
+            // 🔁 Restore tracked progress AFTER calculate resets it
+            remainingCaloriesGlobal = data.remainingCaloriesGlobal || 0;
+            remainingProtein = data.remainingProtein || 0;
+            remainingCarbs = data.remainingCarbs || 0;
+            remainingFats = data.remainingFats || 0;
+            totalCalories = data.totalCalories || 0;
+
+            // 🔹 Restore history
+            document.getElementById("foodList").innerHTML = data.history || "";
+
+            // 🔹 Show tracker
+            document.getElementById("tracker").style.display = "block";
+
+            // 🔹 Update UI values
+            document.getElementById("remainingCalories").innerText =
+              `Remaining: ${Math.round(remainingCaloriesGlobal)} kcal`;
+
+            document.getElementById("remainingMacros").innerText =
+              `Protein: ${Math.round(remainingProtein)}g | Carbs: ${Math.round(remainingCarbs)}g | Fats: ${Math.round(remainingFats)}g`;
+
+            updateProgress();
+          }
         }
       } catch (err) {
         console.error("Firestore load error:", err);
@@ -406,24 +444,40 @@ window.signup = function () {
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
 
+  const btns = document.querySelectorAll("#authBox button");
+
+  btns.forEach((btn) => (btn.disabled = true));
+  btns[0].innerHTML = 'Signing up <span class="loader"></span>';
+
   createUserWithEmailAndPassword(auth, email, password)
-    .then(() => {
-      alert("Account created!");
-    })
-    .catch((err) => alert(err.message));
+    .then(() => showToast("Account created!", "success"))
+    .catch((err) => showToast(err.message, "error"))
+    .finally(() => {
+      btns.forEach((btn) => (btn.disabled = false));
+      btns[0].innerHTML = "Sign Up";
+    });
 };
 
 window.login = function () {
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
 
+  const btns = document.querySelectorAll("#authBox button");
+
+  btns.forEach((btn) => (btn.disabled = true));
+
+  btns[1].innerHTML = 'Logging in <span class="loader"></span>';
+
   signInWithEmailAndPassword(auth, email, password)
     .then(() => {
-      alert("Logged in!");
       document.getElementById("authBox").style.display = "none";
       document.getElementById("selectionScreen").style.display = "block";
     })
-    .catch((err) => alert(err.message));
+    .catch((err) => showToast(err.message, "error"))
+    .finally(() => {
+      btns.forEach((btn) => (btn.disabled = false));
+      btns[1].innerHTML = "Login";
+    });
 };
 
 window.logout = function () {
@@ -436,7 +490,7 @@ window.logout = function () {
       document.getElementById("email").value = "";
       document.getElementById("password").value = "";
     })
-    .catch((err) => alert(err.message));
+    .catch((err) => showToast(err.message, "error"));
 };
 
 window.togglePassword = function () {
@@ -479,7 +533,7 @@ window.saveWorkout = function () {
 
   localStorage.setItem("workoutPlan", JSON.stringify(plan));
 
-  alert("Workout plan saved");
+  showToast("Workout plan saved", "success");
 };
 
 let selectedDay = null;
@@ -492,7 +546,7 @@ window.selectDay = function (day) {
 // when user clicks + on exercise
 window.addExercise = function (exercise) {
   if (!selectedDay) {
-    alert("Select a day first");
+    showToast("Select a day first", "warning");
     return;
   }
 
@@ -620,25 +674,37 @@ window.addCustomExercise = function (day) {
 // saving plan
 window.saveWorkoutToCloud = async function () {
   const user = auth.currentUser;
+
   if (!user) {
-    alert("Login first");
+    showToast("Login first", "warning");
     return;
   }
+
+  const btn = document.querySelector(".save-workout-btn");
+  btn.innerHTML = 'Saving <span class="loader"></span>';
+  btn.disabled = true;
 
   const days = [
     "monday",
     "tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
   ];
 
   let plan = {};
 
   days.forEach((day) => {
     const container = document.getElementById(`${day}-workout`);
+
+    // 🛡️ safety check
+    if (!container) {
+      console.error(`Missing container for ${day}`);
+      return;
+    }
+
     const exercises = container.querySelectorAll("span");
 
     plan[day] = [];
@@ -651,16 +717,17 @@ window.saveWorkoutToCloud = async function () {
   try {
     await setDoc(
       doc(db, "users", user.uid),
-      {
-        workoutPlan: plan,
-      },
+      { workoutPlan: plan },
       { merge: true },
     );
 
-    alert("Workout saved to cloud 💪");
+    showToast("Workout saved", "success");
   } catch (err) {
     console.error(err);
-    alert("Error saving workout");
+    showToast("Error saving workout", "error");
+  } finally {
+    btn.innerHTML = "Save Workout";
+    btn.disabled = false;
   }
 };
 
@@ -721,3 +788,134 @@ function typeEffect() {
 window.addEventListener("load", () => {
   typeEffect();
 });
+// reste whole
+window.resetProfile = function () {
+  showConfirm("Are you sure you want to reset everything?", () => {
+    resetProfileConfirmed();
+  });
+};
+window.resetProfileConfirmed = async function () {
+  showConfirm("Are you sure you want to reset everything?", () => {
+    resetProfileConfirmed();
+  });
+  // 🔹 clear inputs
+  document.getElementById("age").value = "";
+  document.getElementById("height").value = "";
+  document.getElementById("weight").value = "";
+  document.getElementById("goal").value = "lose";
+  document.getElementById("activity").value = "1.2";
+  document.getElementById("gender").value = "male";
+
+  // 🔹 reset UI
+  document.querySelector(".form").style.display = "block";
+  document.getElementById("userSummary").style.display = "none";
+  document.getElementById("tracker").style.display = "none";
+
+  // 🔹 reset result panel
+  document.getElementById("result").innerHTML = `
+    <div class="empty-state">
+      <p>Fill the form to generate your fitness plan</p>
+    </div>
+  `;
+
+  // 🔹 clear history UI
+  document.getElementById("foodList").innerHTML = "";
+
+  // 🔹 reset progress bar
+  document.getElementById("calorieBar").style.width = "0%";
+
+  // 🔹 reset ALL variables
+  totalCalories = 0;
+  totalProtein = 0;
+  totalCarbs = 0;
+  totalFats = 0;
+
+  remainingCaloriesGlobal = 0;
+  remainingProtein = 0;
+  remainingCarbs = 0;
+  remainingFats = 0;
+
+  // 🔹 clear local storage
+  localStorage.removeItem("decifitData");
+
+  // 🔹 clear cloud data
+  const user = auth.currentUser;
+  if (user) {
+    try {
+      await setDoc(
+        doc(db, "users", user.uid),
+        {
+          age: "",
+          height: "",
+          weight: "",
+          goal: "",
+          activity: "",
+          gender: "",
+          history: "",
+          totalCalories: 0,
+          totalProtein: 0,
+          totalCarbs: 0,
+          totalFats: 0,
+          remainingCaloriesGlobal: 0,
+          remainingProtein: 0,
+          remainingCarbs: 0,
+          remainingFats: 0,
+        },
+        { merge: true },
+      );
+    } catch (err) {
+      console.error("Error resetting cloud data:", err);
+    }
+  }
+
+  showToast("Profile reset successfully", "success");
+};
+
+function showToast(message, type = "success") {
+  const container = document.getElementById("toast-container");
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.innerText = message;
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateX(20px)";
+    setTimeout(() => toast.remove(), 300);
+  }, 2500);
+}
+
+let confirmCallback = null;
+
+window.showConfirm = function (message, callback) {
+  document.getElementById("confirmText").innerText = message;
+
+  const modal = document.getElementById("confirmModal");
+  modal.style.display = "flex";
+
+  // small delay for animation trigger
+  setTimeout(() => {
+    modal.classList.add("show");
+  }, 10);
+
+  confirmCallback = callback;
+};
+
+window.closeConfirm = function () {
+  const modal = document.getElementById("confirmModal");
+
+  // remove animation class
+  modal.classList.remove("show");
+
+  // wait for animation to finish, then hide
+  setTimeout(() => {
+    modal.style.display = "none";
+  }, 250);
+};
+
+window.confirmAction = function () {
+  if (confirmCallback) confirmCallback();
+  closeConfirm();
+};
